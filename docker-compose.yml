@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  dev:
+    build: .docker/rust
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+    links:
+      - db
+    networks:
+      - ping-network
+    environment:
+      WAIT_HOSTS: db:5432
+
+  db:
+    image: "postgres:14.4-alpine"
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    networks:
+      - ping-network
+
+networks:
+  ping-network:
+    name: ping-network
+    external: false
+
+volumes:
+  db:
+    driver: local
