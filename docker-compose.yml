@@ -1,19 +1,6 @@
 version: "3.8"
 
 services:
-  dev:
-    build: .docker/rust
-    volumes:
-      - .:/usr/src/app
-    ports:
-      - "3000:3000"
-    links:
-      - db
-    networks:
-      - ping-network
-    environment:
-      WAIT_HOSTS: db:5432
-
   db:
     image: "postgres:14.4-alpine"
     ports:
